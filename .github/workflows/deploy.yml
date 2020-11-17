@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Packages
+        run: sudo apt install -y pptpd openfortivpn sshpass
+      
+      - name: Connect VPN
+        run: sudo openfortivpn ${{ secrets.VPN_ADDR }} -u ${{ secrets.VPN_ID }} -p ${{ secrets.VPN_PASS }} &
+
+      - name: Wait Connect VPN
+        run: timeout 30 bash -c 'while ! ip addr | grep ppp0 | grep inet 2>/dev/null; do echo waiting.; sleep 1; done && echo "vpn connected."'
+        
+      - name: Run deploy script
+        run: sshpass -p ${{ secrets.SERVER_PASS }} ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password ${{ secrets.SERVER_ID }}@${{ secrets.SERVER_ADDR }} 'sh deploy.sh'
+        
+      - name: DisConnect VPN
+        if: always()
+        run: sudo pkill -KILL -f openfortivpn || sh -c ":"
