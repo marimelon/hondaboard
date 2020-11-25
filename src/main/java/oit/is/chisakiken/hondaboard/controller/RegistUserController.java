@@ -14,6 +14,6 @@ public class RegistUserController {
 
     @PostMapping("/register")
     public String postRegister() {
-        return "redirect:/";
+        return "redirect:/userpage";
     }
 }

@@ -24,7 +24,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 
         // Spring Securityのフォームを利用してログインを行う
         http.formLogin();
-        //http.authorizeRequests().antMatchers("/").authenticated();
+        http.authorizeRequests().antMatchers("/userpage").authenticated();
         http.csrf().disable();
         http.headers().frameOptions().disable();
 
