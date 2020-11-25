@@ -2,9 +2,9 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset=" UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Page</title>
+    <title>ChatPage</title>
 </head>
 
 <body>
@@ -14,8 +14,15 @@
         ようこそ [[${name}]]
     </h1>
 
-    <a href="/chatpage">チャットページへ</a>
-
+    <div th:if="${received_message}">
+        [[${received_message}]]
+    </div>
+    <br>
+    <form th:action="@{/chatpage}" method="post">
+        send message:
+        <input type="text" name="send_message" />
+        <input type="submit" value="送信" />
+    </form>
 </body>
 
 </html>
