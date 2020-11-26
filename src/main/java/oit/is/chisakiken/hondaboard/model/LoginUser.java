@@ -10,7 +10,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 public class LoginUser implements UserDetails {
-    final int id;
+    int id;
     String name;
     String password;
 
@@ -47,5 +47,13 @@ public class LoginUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
