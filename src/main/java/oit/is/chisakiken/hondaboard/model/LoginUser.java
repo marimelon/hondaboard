@@ -11,8 +11,8 @@ import lombok.Data;
 @Data
 public class LoginUser implements UserDetails {
     int id;
-    String name;
-    String password;
+    final String name;
+    final String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -47,13 +47,5 @@ public class LoginUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
