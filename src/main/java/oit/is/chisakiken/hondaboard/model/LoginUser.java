@@ -10,9 +10,9 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 public class LoginUser implements UserDetails {
-    final int id;
-    String name;
-    String password;
+    int id;
+    final String name;
+    final String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

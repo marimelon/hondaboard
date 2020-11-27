@@ -8,13 +8,19 @@
 </head>
 
 <body>
-    <form action="/register" method="post">
-        ユーザー名:
-        <input type="text" name="username" /><br>
-        パスワード:
-        <input type="password" name="password" /><br>
-        パスワード(確認):
-        <input type="password" name="password2" /><br>
+    <form method="post" th:action="@{/register}" th:object="${registerUserForm}">
+        <ul th:if="${#fields.hasGlobalErrors()}">
+            <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+        </ul> 
+        ユーザー名:<br>
+        <input type="text" th:field="*{username}" required/>
+        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span><br>
+        パスワード:<br>
+        <input type="password" th:field="*{password}" required/>
+        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span><br>
+        パスワード(確認):<br>
+        <input type="password" th:field="*{confirm}">
+        <span th:if="${#fields.hasErrors('passwordsEqual')}" th:errors="*{passwordsEqual}"></span><br>
         <input type="submit" value="登録" />
     </form>
 </body>
