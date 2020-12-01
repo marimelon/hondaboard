@@ -16,6 +16,9 @@ public interface LoginUserRepository {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void save(LoginUser user);
 
+    @Select("SELECT id, name, password FROM user WHERE id = #{id}")
+    Optional<LoginUser> findById(int id);
+
     @Select("SELECT id, name, password FROM user WHERE name = #{name}")
     Optional<LoginUser> findByName(String name);
 }

@@ -23,21 +23,19 @@ public class ChatPageController {
     public String getChatpage(Principal prin, ModelMap model) {
         String loginUser = prin.getName();
         model.addAttribute("name", loginUser);
+        var messages = chatService.getMessage(1);
+        model.addAttribute("messages", messages);
         return "chatpage.html";
     }
 
     @PostMapping("/chatpage")
     public String postChatpage(Principal prin, @RequestParam String send_message, ModelMap model) {
-        String loginUser = prin.getName();
         Authentication auth = (Authentication) prin;
         LoginUser user = (LoginUser) auth.getPrincipal();
-        model.addAttribute("name", loginUser);
-        String received_message = loginUser + ":" + send_message;
-        model.addAttribute("received_message", received_message);
 
         // DBにメッセージを格納.
 
         chatService.postMessage(user.getId(), 1, send_message);
-        return "chatpage.html";
+        return "redirect:chatpage";
     }
 }
