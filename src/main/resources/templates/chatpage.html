@@ -17,6 +17,11 @@
     <div th:if="${received_message}">
         [[${received_message}]]
     </div>
+    <div th:each="msg:${messages}">
+        <tr>
+            <td>[[${msg.username}]] : [[${msg.content}]]</td>
+        </tr>
+    </div>
     <br>
     <form th:action="@{/chatpage}" method="post">
         send message:
