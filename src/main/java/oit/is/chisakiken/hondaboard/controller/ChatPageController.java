@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.chisakiken.hondaboard.model.LoginUser;
 import oit.is.chisakiken.hondaboard.service.ChatService;
@@ -33,9 +34,15 @@ public class ChatPageController {
         Authentication auth = (Authentication) prin;
         LoginUser user = (LoginUser) auth.getPrincipal();
 
-        // DBにメッセージを格納.
-
         chatService.postMessage(user.getId(), 1, send_message);
         return "redirect:chatpage";
     }
+
+    @GetMapping("/chatpage/sse")
+    public SseEmitter asyncChat() {
+        SseEmitter sseEmitter = new SseEmitter();
+        chatService.joinUser(sseEmitter, 1);
+        return sseEmitter;
+    }
+
 }

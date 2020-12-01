@@ -5,6 +5,14 @@
     <meta charset=" UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatPage</title>
+    <script>
+        window.onload = function () {
+            var sse = new EventSource('/chatpage/sse');
+            sse.onmessage = function (event) {
+                console.log(event.data);
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -14,9 +22,6 @@
         ようこそ [[${name}]]
     </h1>
 
-    <div th:if="${received_message}">
-        [[${received_message}]]
-    </div>
     <div th:each="msg:${messages}">
         <tr>
             <td>[[${msg.username}]] : [[${msg.content}]]</td>
