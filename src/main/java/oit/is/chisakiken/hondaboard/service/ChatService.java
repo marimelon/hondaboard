@@ -46,6 +46,7 @@ public class ChatService {
 
     public void joinUser(SseEmitter sseEmitter, int roomID) {
         userConnections.add(roomID, sseEmitter);
+        sseEmitter.onTimeout(()->{sseEmitter.complete();});
     }
 
     @Async
@@ -54,7 +55,7 @@ public class ChatService {
         for (var emitter : userConnections.get(comment.getRoom_id())) {
             try {
                 emitter.send("");
-            } catch (IOException e) {
+            } catch (Exception e) {
                 closedEmitters.add(emitter);
             }
         }
