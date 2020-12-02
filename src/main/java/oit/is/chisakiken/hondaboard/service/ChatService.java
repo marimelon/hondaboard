@@ -50,13 +50,16 @@ public class ChatService {
 
     @Async
     public void asyncSend(Comment comment) {
+        var closedEmitters = new ArrayList<SseEmitter>();
         for (var emitter : userConnections.get(comment.getRoom_id())) {
-
             try {
                 emitter.send("");
             } catch (IOException e) {
-                userConnections.get(comment.getRoom_id()).remove(emitter);
+                closedEmitters.add(emitter);
             }
+        }
+        for (var emitter : closedEmitters) {
+            userConnections.get(comment.getRoom_id()).remove(emitter);
         }
     }
 
