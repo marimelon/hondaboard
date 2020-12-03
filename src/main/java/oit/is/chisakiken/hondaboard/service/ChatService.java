@@ -1,6 +1,5 @@
 package oit.is.chisakiken.hondaboard.service;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,15 +45,20 @@ public class ChatService {
 
     public void joinUser(SseEmitter sseEmitter, int roomID) {
         userConnections.add(roomID, sseEmitter);
-        sseEmitter.onTimeout(()->{sseEmitter.complete();});
+        sseEmitter.onTimeout(() -> {
+            sseEmitter.complete();
+        });
     }
 
     @Async
     public void asyncSend(Comment comment) {
         var closedEmitters = new ArrayList<SseEmitter>();
+        Message message = new Message(loginUserRepository.findById(comment.getUser_id()).get().getName(),
+                comment.getContent());
+
         for (var emitter : userConnections.get(comment.getRoom_id())) {
             try {
-                emitter.send("");
+                emitter.send(message);
             } catch (Exception e) {
                 closedEmitters.add(emitter);
             }
