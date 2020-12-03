@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -56,15 +59,23 @@ public class ChatService {
         Message message = new Message(loginUserRepository.findById(comment.getUser_id()).get().getName(),
                 comment.getContent());
 
-        for (var emitter : userConnections.get(comment.getRoom_id())) {
-            try {
-                emitter.send(message);
-            } catch (Exception e) {
-                closedEmitters.add(emitter);
+        var mapper = new ObjectMapper();
+        try {
+            var event = SseEmitter.event().data(mapper.writeValueAsString(message)).reconnectTime(10_000L);
+
+            for (var emitter : userConnections.get(comment.getRoom_id())) {
+                try {
+                    emitter.send(event);
+                } catch (Exception e) {
+                    closedEmitters.add(emitter);
+                }
             }
-        }
-        for (var emitter : closedEmitters) {
-            userConnections.get(comment.getRoom_id()).remove(emitter);
+            for (var emitter : closedEmitters) {
+                userConnections.get(comment.getRoom_id()).remove(emitter);
+            }
+        } catch (JsonProcessingException e) {
+            System.out.println("Exception:" + e.getClass().getName() + ":" + e.getMessage());
+            return;
         }
     }
 
