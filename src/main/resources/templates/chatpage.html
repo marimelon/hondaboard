@@ -5,6 +5,21 @@
     <meta charset=" UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatPage</title>
+    <script>
+        window.onload = function () {
+            var sse = new EventSource('/chatpage/sse');
+            sse.onmessage = function (event) {
+                console.log(event.data);
+                var message = JSON.parse(event.data);
+                var tr = document.createElement("tr");
+                var td = document.createElement("td");
+                var text = document.createTextNode(message['username'] + " : " + message['content']);
+                td.appendChild(text);
+                tr.appendChild(td);
+                document.getElementById("msg-table-body").appendChild(tr);
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -14,14 +29,13 @@
         ようこそ [[${name}]]
     </h1>
 
-    <div th:if="${received_message}">
-        [[${received_message}]]
-    </div>
-    <div th:each="msg:${messages}">
-        <tr>
-            <td>[[${msg.username}]] : [[${msg.content}]]</td>
-        </tr>
-    </div>
+    <table>
+        <tbody id="msg-table-body">
+            <tr th:each="msg:${messages}">
+                <td>[[${msg.username}]] : [[${msg.content}]]</td>
+            </tr>
+        </tbody>
+    </table>
     <br>
     <form th:action="@{/chatpage}" method="post">
         send message:
