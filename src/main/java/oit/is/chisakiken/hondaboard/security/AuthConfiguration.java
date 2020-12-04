@@ -23,7 +23,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         // Spring Securityのフォームを利用してログインを行う
-        http.formLogin();
+        http.formLogin().loginProcessingUrl("/login").loginPage("/login");
         http.authorizeRequests().antMatchers("/userpage").authenticated();
         http.csrf().disable();
         http.headers().frameOptions().disable();
