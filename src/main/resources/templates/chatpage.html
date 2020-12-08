@@ -7,7 +7,9 @@
     <title>ChatPage</title>
     <script>
         window.onload = function () {
-            var sse = new EventSource('/chatpage/sse');
+            var params = [...new URLSearchParams(location.search).entries()]
+                .reduce((obj, e) => ({ ...obj, [e[0]]: e[1] }), {});
+            var sse = new EventSource('/chatpage/sse?id=' + params['id']);
             sse.onmessage = function (event) {
                 console.log(event.data);
                 var message = JSON.parse(event.data);
@@ -37,7 +39,7 @@
         </tbody>
     </table>
     <br>
-    <form th:action="@{/chatpage}" method="post">
+    <form th:action="@{/chatpage(id=${id})}" method="post">
         send message:
         <input type="text" name="send_message" />
         <input type="submit" value="送信" />

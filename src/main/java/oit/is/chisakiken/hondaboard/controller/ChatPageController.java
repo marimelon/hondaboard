@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import oit.is.chisakiken.hondaboard.model.LoginUser;
 import oit.is.chisakiken.hondaboard.service.ChatService;
@@ -21,27 +22,30 @@ public class ChatPageController {
     ChatService chatService;
 
     @GetMapping("/chatpage")
-    public String getChatpage(Principal prin, ModelMap model) {
+    public String getChatpage(@RequestParam Integer id, Principal prin, ModelMap model) {
+        model.addAttribute("id", id);
         String loginUser = prin.getName();
         model.addAttribute("name", loginUser);
-        var messages = chatService.getMessage(1);
+        var messages = chatService.getMessage(id);
         model.addAttribute("messages", messages);
         return "chatpage.html";
     }
 
     @PostMapping("/chatpage")
-    public String postChatpage(Principal prin, @RequestParam String send_message, ModelMap model) {
+    public String postChatpage(@RequestParam Integer id, RedirectAttributes redirectAttributes, Principal prin,
+            @RequestParam String send_message, ModelMap model) {
         Authentication auth = (Authentication) prin;
         LoginUser user = (LoginUser) auth.getPrincipal();
 
-        chatService.postMessage(user.getId(), 1, send_message);
-        return "redirect:chatpage";
+        chatService.postMessage(user.getId(), id, send_message);
+
+        return "redirect:chatpage?id="+id;
     }
 
     @GetMapping("/chatpage/sse")
-    public SseEmitter asyncChat() {
+    public SseEmitter asyncChat(@RequestParam Integer id) {
         SseEmitter sseEmitter = new SseEmitter();
-        chatService.joinUser(sseEmitter, 1);
+        chatService.joinUser(sseEmitter, id);
         return sseEmitter;
     }
 
