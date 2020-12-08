@@ -4,16 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import oit.is.chisakiken.hondaboard.model.Room;
+import oit.is.chisakiken.hondaboard.model.RoomUser;
 import oit.is.chisakiken.hondaboard.repository.RoomRepository;
+import oit.is.chisakiken.hondaboard.repository.RoomUserRepository;
 
 @Service
 public class RoomService {
     @Autowired
     RoomRepository roomRepository;
 
-    public void registerNewRoom(String name){
+    @Autowired
+    RoomUserRepository roomUserRepository;
+
+    public void registerNewRoom(int userid, String name) {
         var room = new Room(name);
         roomRepository.save(room);
+        roomUserRepository.save(new RoomUser(room.getId(), userid, "owner"));
         return;
     }
 }
