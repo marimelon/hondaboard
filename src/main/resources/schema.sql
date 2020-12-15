@@ -24,3 +24,10 @@ Create Table comment(
     date TIMESTAMP NOT NULL
 );
 
+Create Table Event(
+    id IDENTITY,
+    user_id INT NOT NULL,
+    title CHAR NOT NULL,
+    start_at date,
+    end_at date
+)

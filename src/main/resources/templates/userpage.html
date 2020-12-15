@@ -27,10 +27,21 @@
     <div th:if="!${#lists.isEmpty(rooms)}">
         <h2>ルーム入室</h2>
     </div>
-    
+
     <div th:each="room:${rooms}">
         <a th:href="@{/chatpage(id=${room.id})}">[[${room.name}]]</a>
     </div>
+
+    <h2>リマインダー</h2>
+    <form method="POST" th:action="@{/event/register}" th:object="${registerEventForm}">
+        リマインダータイトル<input type="text" th:field="*{title}" required />
+        <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br>
+        開始日<input type="date" th:field="*{start_at}" max="9999-12-31">
+        <span th:if="${#fields.hasErrors('start_at')}" th:errors="*{start_at}"></span>
+        終了日<input type="date" th:field="*{end_at}" max="9999-12-31">
+        <span th:if="${#fields.hasErrors('end_at')}" th:errors="*{end_at}"></span><br>
+        <input type="submit" value="登録" />
+    </form>
 
 </body>
 
