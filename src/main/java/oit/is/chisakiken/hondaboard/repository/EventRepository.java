@@ -1,7 +1,6 @@
 package oit.is.chisakiken.hondaboard.repository;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
