@@ -13,6 +13,8 @@ import lombok.ToString;
 public class RegisterEventForm {
     @NotBlank
     private String title;
+    @NotBlank
     private String start_at;
+    @NotBlank
     private String end_at;
 }
