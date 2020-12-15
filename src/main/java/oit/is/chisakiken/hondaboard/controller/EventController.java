@@ -1,16 +1,23 @@
 package oit.is.chisakiken.hondaboard.controller;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import oit.is.chisakiken.hondaboard.controller.form.RegisterEventForm;
+import oit.is.chisakiken.hondaboard.model.Event;
 import oit.is.chisakiken.hondaboard.model.LoginUser;
 import oit.is.chisakiken.hondaboard.service.EventService;
 
