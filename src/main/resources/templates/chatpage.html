@@ -9,7 +9,7 @@
         window.onload = function () {
             var params = [...new URLSearchParams(location.search).entries()]
                 .reduce((obj, e) => ({ ...obj, [e[0]]: e[1] }), {});
-            var sse = new EventSource('/chatpage/sse?id=' + params['id']);
+            var sse = new EventSource('/chatpage/sse?id=' + params['id'] + '&initmessageid=[[${initmessageid}]]');
             sse.onmessage = function (event) {
                 console.log(event.data);
                 var message = JSON.parse(event.data);

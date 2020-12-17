@@ -2,7 +2,9 @@ package oit.is.chisakiken.hondaboard.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 
 import oit.is.chisakiken.hondaboard.dto.Message;
 import oit.is.chisakiken.hondaboard.model.Comment;
@@ -41,9 +44,26 @@ public class ChatService {
         for (var m : commentRepository.findByRoomId(roomID)) {
             var user = loginUserRepository.findById(m.getUser_id());
 
-            messages.add(new Message(user.get().getName(), m.getContent()));
+            messages.add(new Message(user.get(), m));
         }
         return messages;
+    }
+
+    public void joinUser(SseEmitter sseEmitter, int roomID, int lastEventId) {
+        try {
+            var comments = commentRepository.findByRoomId(roomID).stream().filter(v -> v.getId() > lastEventId)
+                    .sorted(Comparator.comparing(Comment::getId)).collect(Collectors.toList());
+
+            for (var comment : comments) {
+                var message = new Message(loginUserRepository.findById(comment.getUser_id()).get(), comment);
+                var event = buildSseEvent(message);
+                sseEmitter.send(event);
+            }
+            joinUser(sseEmitter, roomID);
+        } catch (Exception e) {
+            System.out.println("Exception:" + e.getClass().getName() + ":" + e.getMessage());
+            return;
+        }
     }
 
     public void joinUser(SseEmitter sseEmitter, int roomID) {
@@ -56,27 +76,34 @@ public class ChatService {
     @Async
     public void asyncSend(Comment comment) {
         var closedEmitters = new ArrayList<SseEmitter>();
-        Message message = new Message(loginUserRepository.findById(comment.getUser_id()).get().getName(),
-                comment.getContent());
+        var message = new Message(loginUserRepository.findById(comment.getUser_id()).get(), comment);
 
-        var mapper = new ObjectMapper();
         try {
-            var event = SseEmitter.event().data(mapper.writeValueAsString(message)).reconnectTime(10_000L);
+            var event = buildSseEvent(message);
 
-            for (var emitter : userConnections.get(comment.getRoom_id())) {
-                try {
-                    emitter.send(event);
-                } catch (Exception e) {
-                    closedEmitters.add(emitter);
+            if (userConnections.get(comment.getRoom_id()) != null) {
+                for (var emitter : userConnections.get(comment.getRoom_id())) {
+                    try {
+                        emitter.send(event);
+                    } catch (Exception e) {
+                        closedEmitters.add(emitter);
+                    }
                 }
-            }
-            for (var emitter : closedEmitters) {
-                userConnections.get(comment.getRoom_id()).remove(emitter);
+
+                for (var emitter : closedEmitters) {
+                    userConnections.get(comment.getRoom_id()).remove(emitter);
+                }
             }
         } catch (JsonProcessingException e) {
             System.out.println("Exception:" + e.getClass().getName() + ":" + e.getMessage());
             return;
         }
+    }
+
+    private SseEventBuilder buildSseEvent(Message message) throws JsonProcessingException {
+        var mapper = new ObjectMapper();
+        return SseEmitter.event().id("" + message.getId()).data(mapper.writeValueAsString(message))
+                .reconnectTime(10_000L);
     }
 
 }
