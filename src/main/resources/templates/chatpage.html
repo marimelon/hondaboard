@@ -23,7 +23,17 @@
             return wapper.scrollTop + wapper.clientHeight !== wapper.scrollHeight;
         }
 
+        function updateChatWapperLeyout() {
+            var wapper = document.getElementsByClassName("chat__wrapper")[0];
+            var wapper_bottom = document.getElementsByClassName("FlexTextarea")[0].offsetHeight + 5;
+            wapper.style.bottom = wapper_bottom + "px";
+            wapper.style.maxHeight = (document.getElementsByClassName("chat")[0].offsetHeight - wapper_bottom) + "px";
+        }
+
         window.onload = function () {
+
+            // ChatWapperのレイアウト
+            updateChatWapperLeyout();
             // 下部にスクロール
             scrollToBottom();
 
@@ -38,9 +48,7 @@
                     form.submit();
                 }
                 setTimeout(() => {
-                    var wapper_bottom = document.getElementsByClassName("FlexTextarea")[0].offsetHeight + 5;
-                    wapper.style.bottom = wapper_bottom + "px";
-                    wapper.style.maxHeight = (document.getElementsByClassName("chat")[0].offsetHeight - wapper_bottom) + "px";
+                    updateChatWapperLeyout();
                     if (shouldScroll()) {
                         scrollToBottom();
                     }
