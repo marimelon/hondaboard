@@ -17,9 +17,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import oit.is.chisakiken.hondaboard.dto.Message;
 import oit.is.chisakiken.hondaboard.model.LoginUser;
 import oit.is.chisakiken.hondaboard.service.ChatService;
+import oit.is.chisakiken.hondaboard.service.RoomService;
 
 @Controller
 public class ChatPageController {
+
+    @Autowired
+    RoomService roomService;
 
     @Autowired
     ChatService chatService;
@@ -29,6 +33,8 @@ public class ChatPageController {
         model.addAttribute("id", id);
         String loginUser = prin.getName();
         model.addAttribute("name", loginUser);
+        var room = roomService.getRoom(id).get();
+        model.addAttribute("roomname", room.getName());
         var messages = chatService.getMessage(id);
         model.addAttribute("messages", messages);
         var maxMessageId = messages.stream().map(Message::getId).max(Comparator.naturalOrder()).orElse(0);

@@ -1,6 +1,7 @@
 package oit.is.chisakiken.hondaboard.repository;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,4 +18,7 @@ public interface RoomRepository {
 
     @Select("SELECT id, name FROM room;")
     ArrayList<Room> findAll();
+
+    @Select("SELECT id, name FROM room WHERE id=#{id};")
+    Optional<Room> findById(int id);
 }
