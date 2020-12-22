@@ -235,12 +235,20 @@
 </head>
 
 <body>
-    <a href="/userpage">ユーザーページへ戻る</a>
-    <a style="float: right;" href="/logout">ログアウト</a>
+    <div>
+        <a href="/userpage">ユーザーページへ戻る</a>
+        <a style="float: right;" href="/logout">ログアウト</a>
+    </div>
 
-    <h1>
-        [[${name}]]
-    </h1>
+    <div>
+        <a style="font-size: 32px;font-weight: bold;">
+            ようこそ ルーム [[${roomname}]] へ
+        </a>
+        <a style="float: right;">
+            [[${name}]]さん
+        </a>
+    </div>
+
 
     <div class="chat">
         <div class="chat__wrapper">
