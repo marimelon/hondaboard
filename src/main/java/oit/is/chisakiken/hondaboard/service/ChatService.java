@@ -21,6 +21,7 @@ import oit.is.chisakiken.hondaboard.dto.Message;
 import oit.is.chisakiken.hondaboard.model.Comment;
 import oit.is.chisakiken.hondaboard.repository.CommentRepository;
 import oit.is.chisakiken.hondaboard.repository.LoginUserRepository;
+import oit.is.chisakiken.hondaboard.repository.RoomRepository;
 
 @Service
 public class ChatService {
@@ -30,6 +31,9 @@ public class ChatService {
 
     @Autowired
     LoginUserRepository loginUserRepository;
+
+    @Autowired
+    RoomRepository roomRepository;
 
     private MultiValueMap<Integer, SseEmitter> userConnections = new LinkedMultiValueMap<>();
 
@@ -104,6 +108,18 @@ public class ChatService {
         var mapper = new ObjectMapper();
         return SseEmitter.event().id("" + message.getId()).data(mapper.writeValueAsString(message))
                 .reconnectTime(10_000L);
+    }
+
+    public List<Message> getLatest(int num) {
+        var messages = new ArrayList<Message>();
+
+        for (var m : commentRepository.findLatest(num)) {
+            var user = loginUserRepository.findById(m.getUser_id());
+            var room = roomRepository.findById(m.getRoom_id());
+            messages.add(new Message(user.get(), m, room.get()));
+        }
+
+        return messages;
     }
 
 }

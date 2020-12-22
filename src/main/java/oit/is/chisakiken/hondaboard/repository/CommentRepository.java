@@ -23,4 +23,7 @@ public interface CommentRepository {
 
     @Select("SELECT id, room_id, user_id, date, content FROM comment WHERE user_id=#{user_id};")
     ArrayList<Comment> findByUserId(int room_id);
+
+    @Select("SELECT id, room_id, user_id, date, content FROM comment ORDER BY id DESC LIMIT #{num};")
+    ArrayList<Comment> findLatest(int num);
 }

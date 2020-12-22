@@ -65,6 +65,11 @@
         </div>
         <div id='calendar'></div>
     </div>
+
+    最新10件のコメント
+    <div class="chat__message" th:each="msg:${messages}">
+        [[${msg.room_name}]] [[${msg.username}]] [[${msg.content}]]
+    </div>
 </body>
 
 </html>
