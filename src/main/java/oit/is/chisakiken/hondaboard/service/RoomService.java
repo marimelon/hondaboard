@@ -1,6 +1,7 @@
 package oit.is.chisakiken.hondaboard.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,10 @@ public class RoomService {
         roomRepository.save(room);
         roomUserRepository.save(new RoomUser(room.getId(), userid, "owner"));
         return;
+    }
+
+    public Optional<Room> getRoom(int id){
+        return roomRepository.findById(id);
     }
 
     public List<Room> getRooms() {
