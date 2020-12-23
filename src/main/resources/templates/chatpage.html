@@ -57,6 +57,14 @@
 
             document.querySelectorAll('.FlexTextarea').forEach(flexTextarea);
 
+            // キー入力時テキストフィールドに自動フォーカス
+            window.addEventListener("keydown",e=>{
+                if(document.activeElement !== textarea){
+                    textarea.focus();
+                    e.preventDefault();
+                }
+            });
+
             // SSEチャット更新
             var params = [...new URLSearchParams(location.search).entries()]
                 .reduce((obj, e) => ({ ...obj, [e[0]]: e[1] }), {});
@@ -261,7 +269,7 @@
             <div class="FlexTextarea">
                 <div class="FlexTextarea__dummy" aria-hidden="true"></div>
                 <textarea id="NewMessageForm__textarea" class="FlexTextarea__textarea" name="send_message"
-                    placeholder="Message"></textarea>
+                    placeholder="Message" autofocus></textarea>
             </div>
             <button class="material__button" id="NewMessageFrom__button" type="submit" name="action">
                 送信
