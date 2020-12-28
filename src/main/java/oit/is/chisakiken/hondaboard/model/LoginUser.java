@@ -13,7 +13,8 @@ public class LoginUser implements UserDetails {
     int id;
     final String name;
     final String password;
-
+    String image;
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
