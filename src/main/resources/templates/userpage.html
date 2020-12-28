@@ -29,6 +29,8 @@
         ようこそ [[${name}]]
     </h1>
 
+    <a href="/profile">ユーザ設定</a>
+
     <h2>ルーム作成</h2>
     <form method="post" th:action="@{/room/register}" th:object="${registerRoomForm}">
         ルーム名:<br>
