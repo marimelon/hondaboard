@@ -58,8 +58,8 @@
             document.querySelectorAll('.FlexTextarea').forEach(flexTextarea);
 
             // キー入力時テキストフィールドに自動フォーカス
-            window.addEventListener("keydown",e=>{
-                if(document.activeElement !== textarea){
+            window.addEventListener("keydown", e => {
+                if (document.activeElement !== textarea) {
                     textarea.focus();
                     e.preventDefault();
                 }
@@ -244,15 +244,16 @@
 
 <body>
     <div>
-        <a href="/userpage">ユーザーページへ戻る</a>
-        <a style="float: right;" href="/logout">ログアウト</a>
+        <a th:if="!${#strings.isEmpty(name)}" href="/userpage">ユーザーページへ戻る</a>
+        <a th:if="${#strings.isEmpty(name)}" href="/">スタートページへ戻る</a>
+        <a th:if="!${#strings.isEmpty(name)}" style="float: right;" href="/logout">ログアウト</a>
     </div>
 
     <div>
         <a style="font-size: 32px;font-weight: bold;">
             ようこそ ルーム [[${roomname}]] へ
         </a>
-        <a style="float: right;">
+        <a th:if="!${#strings.isEmpty(name)}" style="float: right;">
             [[${name}]]さん
         </a>
     </div>
@@ -268,15 +269,16 @@
         <form th:action="@{/chatpage(id=${id})}" method="post" id="new_message_form">
             <div class="FlexTextarea">
                 <div class="FlexTextarea__dummy" aria-hidden="true"></div>
-                <textarea id="NewMessageForm__textarea" class="FlexTextarea__textarea" name="send_message"
-                    placeholder="Message" autofocus></textarea>
+                <textarea th:if="!${#strings.isEmpty(name)}" id="NewMessageForm__textarea"
+                    class="FlexTextarea__textarea" name="send_message" placeholder="Message" autofocus></textarea>
             </div>
-            <button class="material__button" id="NewMessageFrom__button" type="submit" name="action">
+            <button th:if="!${#strings.isEmpty(name)}" class="material__button" id="NewMessageFrom__button"
+                type="submit" name="action">
                 送信
             </button>
         </form>
     </div>
-    <div style="margin-left: 21%; font-size: 12px;">Ctrl+Enterで送信</div>
+    <div th:if="!${#strings.isEmpty(name)}" style="margin-left: 21%; font-size: 12px;">Ctrl+Enterで送信</div>
 </body>
 
 </html>

@@ -31,8 +31,11 @@ public class ChatPageController {
     @GetMapping("/chatpage")
     public String getChatpage(@RequestParam Integer id, Principal prin, ModelMap model) {
         model.addAttribute("id", id);
-        String loginUser = prin.getName();
-        model.addAttribute("name", loginUser);
+        if (prin != null) {
+            String loginUser = prin.getName();
+            model.addAttribute("name", loginUser);
+        }
+
         var room = roomService.getRoom(id).get();
         model.addAttribute("roomname", room.getName());
         var messages = chatService.getMessage(id);
