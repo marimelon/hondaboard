@@ -5,7 +5,7 @@
     <meta charset=" UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatPage</title>
-    <script>
+    <script th:inline="javascript">
         function flexTextarea(el) {
             const dummy = el.querySelector('.FlexTextarea__dummy')
             el.querySelector('.FlexTextarea__textarea').addEventListener('input', e => {
@@ -36,7 +36,8 @@
             updateChatWapperLeyout();
             // 下部にスクロール
             scrollToBottom();
-
+            [#th:block th:if= "!${#strings.isEmpty(name)}"]
+            
             var form = document.getElementById("new_message_form");
             var textarea = document.getElementById("NewMessageForm__textarea");
             var wapper = document.getElementsByClassName("chat__wrapper")[0];
@@ -64,6 +65,8 @@
                     e.preventDefault();
                 }
             });
+
+            [/th:block]
 
             // SSEチャット更新
             var params = [...new URLSearchParams(location.search).entries()]
