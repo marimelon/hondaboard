@@ -66,6 +66,14 @@
         <div id='calendar'></div>
     </div>
 
+    <div th:if="!${#lists.isEmpty(rooms)}">
+        <h2>ルームはこちら</h2>
+    </div>
+
+    <div th:each="room:${rooms}">
+        <a th:href="@{/chatpage(id=${room.id})}">[[${room.name}]]</a>
+    </div>
+
     最新10件のコメント
     <div class="chat__message" th:each="msg:${messages}">
         [[${msg.room_name}]] [[${msg.username}]] [[${msg.content}]]
