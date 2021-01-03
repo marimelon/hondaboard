@@ -29,6 +29,11 @@ public class RegisterRoomController {
             ra.addFlashAttribute("errors", bindingResult);
             return "redirect:/userpage";
         }
+
+        if (registerRoomForm.getName().equals("511jp")) {
+            return "scp511jp.html";
+        }
+
         roomService.registerNewRoom(user.getId(), registerRoomForm.getName());
         return "redirect:/userpage";
     }
