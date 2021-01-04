@@ -45,11 +45,18 @@
             }, false);
 
             uploadButton.addEventListener("click", () => {
+                uploadButton.innerText = 'Uploading';
+                uploadButton.setAttribute('disabled', '');
                 window.cropper.getCroppedCanvas().toBlob((blob) => {
                     var formData = new FormData();
                     formData.append('file', blob);
                     var request = new XMLHttpRequest();
                     request.open("POST", "/profile/upload");
+                    request.onreadystatechange = function () {
+                        if (this.readyState === XMLHttpRequest.DONE) {
+                            location.reload();
+                        }
+                    }
                     request.send(formData);
                 });
             });
@@ -64,7 +71,7 @@
     <h1>
         ようこそ [[${name}]]
     </h1>
-    <img src="/profile/image"/>
+    <img src="/profile/image" />
     <div>
         <h2>
             プロフィール画像アップロード
