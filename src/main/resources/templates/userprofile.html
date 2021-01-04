@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.css"
+        integrity="sha512-949FvIQOibfhLTgmNws4F3DVlYz3FmCRRhJznR22hx76SKkcpZiVV5Kwo0iwK9L6BFuY+6mpdqB2+vDIGVuyHg=="
+        crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.min.js"
+        integrity="sha512-9pGiHYK23sqK5Zm0oF45sNBAX/JqbZEP7bSDHyt+nT3GddF+VFIcYNqREt0GDpmFVZI3LZ17Zu9nMMc9iktkCw=="
+        crossorigin="anonymous"></script>
+    <script>
+        window.cropper = null;
+        window.onload = () => {
+            const imageWrapper = document.getElementById("image__wrapper");
+            const inputElement = document.getElementById("input");
+            const uploadButton = document.getElementById("button");
+            inputElement.addEventListener("change", () => {
+                const file = inputElement.files[0];
+
+                var reader = new FileReader();
+                reader.addEventListener('load', function (e) {
+                    const img = document.getElementById("img");
+
+                    img.setAttribute("src", reader.result);
+
+                    if (window.cropper != null) {
+                        cropper.destroy();
+                    }
+
+                    // Cropperを作成
+                    window.cropper = new Cropper(img, {
+                        aspectRatio: 1 / 1,
+                        zoomable: false
+                    });
+
+                    //画像・アップロードボタンを表示
+                    imageWrapper.style.display = "";
+                    uploadButton.style.display = "";
+                });
+
+                reader.readAsDataURL(file);
+            }, false);
+
+            uploadButton.addEventListener("click", () => {
+                uploadButton.innerText = 'Uploading';
+                uploadButton.setAttribute('disabled', '');
+                window.cropper.getCroppedCanvas().toBlob((blob) => {
+                    var formData = new FormData();
+                    formData.append('file', blob);
+                    var request = new XMLHttpRequest();
+                    request.open("POST", "/profile/upload");
+                    request.onreadystatechange = function () {
+                        if (this.readyState === XMLHttpRequest.DONE) {
+                            location.reload();
+                        }
+                    }
+                    request.send(formData);
+                });
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+    <div>
+        <a href="/userpage">ユーザーページへ戻る</a>
+        <a style="float: right;" href="/logout">ログアウト</a>
+    </div>
+
+    <h1>
+        ようこそ [[${name}]]
+    </h1>
+    <img src="/profile/image" />
+    <div>
+        <h2>
+            プロフィール画像アップロード
+        </h2>
+        <div id="image__wrapper" style="display: none; width: 300px;height: 300px;">
+            <img id="img" src="" name="image" />
+        </div>
+        <input id="input" type="file" name="file" />
+        <button id="button" style="display: none;" class="btn hide" name="submit">Upload</button>
+    </div>
+</body>
+
+</html>

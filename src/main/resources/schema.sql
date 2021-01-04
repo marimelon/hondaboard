@@ -1,7 +1,8 @@
 CREATE TABLE user (
     id IDENTITY,
     name CHAR NOT NULL,
-    password CHAR
+    password CHAR,
+    image CHAR
 );
 
 CREATE TABLE room(
