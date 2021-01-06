@@ -11,7 +11,9 @@ import org.springframework.util.StringUtils;
 
 import oit.is.chisakiken.hondaboard.model.LoginUser;
 import oit.is.chisakiken.hondaboard.repository.LoginUserRepository;
+import oit.is.chisakiken.hondaboard.service.exception.DifferentOldPasswd;
 import oit.is.chisakiken.hondaboard.service.exception.DuplicateUserException;
+import oit.is.chisakiken.hondaboard.service.exception.NotFoundUserException;
 
 @Service
 public class UserAccountService implements UserDetailsService {
@@ -40,5 +42,18 @@ public class UserAccountService implements UserDetailsService {
         var enc_pass = passwordEncoder.encode(password);
         var newUser = new LoginUser(name, enc_pass);
         userRepository.save(newUser);
+    }
+
+    @Transactional
+    public void changePasswd(int userid, String oldpw, String newpw) throws NotFoundUserException,DifferentOldPasswd {
+        var user = userRepository.findById(userid);
+        if (!user.isPresent()) {
+            throw new NotFoundUserException();
+        }
+        var enc_newpw = passwordEncoder.encode(newpw);
+        if (!passwordEncoder.matches(oldpw, user.get().getPassword())){
+            throw new DifferentOldPasswd();
+        }
+        userRepository.updatePassword(user.get().getId(), enc_newpw);
     }
 }

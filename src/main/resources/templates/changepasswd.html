@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パスワード変更ページ</title>
+</head>
+
+<body>
+
+    <div>
+        <a href="/profile">戻る</a>
+        <a style="float: right;" href="/logout">ログアウト</a>
+    </div>
+
+    <div>
+        <form style="text-align:center;" method="post" th:action="@{/profile/changepw}"
+            th:object="${changePasswordForm}">
+            <ul th:if="${#fields.hasGlobalErrors()}">
+                <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+            </ul>
+            <h1>パスワード変更フォーム</h1>
+            <br>
+            現在のパスワード:
+            <input type="password" th:field="*{oldpw}" required />
+            <br th:if="${#fields.hasErrors('oldpw')}">
+            <span th:if="${#fields.hasErrors('oldpw')}" th:errors="*{oldpw}" style="color: red;"></span><br>
+
+            <br>
+
+            新しいパスワード:
+            <input type="password" th:field="*{newpw}" required />
+            <span th:if="${#fields.hasErrors('newpw')}" th:errors="*{newpw}" style="color: red;"></span><br>
+
+            <br>
+
+            新しいパスワード(確認):
+            <input type="password" th:field="*{confirm}"><br>
+            <span th:if="${#fields.hasErrors('newPasswordsEqual')}" th:errors="*{newPasswordsEqual}" style="color: red;"></span><br>
+            <input type="submit" value="登録" />
+        </form>
+    </div>
+</body>
+
+</html>
