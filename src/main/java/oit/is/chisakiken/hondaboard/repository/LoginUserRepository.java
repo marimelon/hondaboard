@@ -20,7 +20,10 @@ public interface LoginUserRepository {
 
     @Update("UPDATE user SET password=#{password} WHERE id=#{id}")
     void updatePassword(@Param("id") int id, @Param("password") String password);
-    
+
+    @Update("UPDATE user SET name=#{name} WHERE id=#{id}")
+    void updateName(@Param("id") int id, @Param("name") String name);
+
     @Select("SELECT id, name, password FROM user WHERE id = #{id}")
     Optional<LoginUser> findById(int id);
 

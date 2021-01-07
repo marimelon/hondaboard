@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ユーザー名変更ページ</title>
+</head>
+
+<body>
+
+    <div>
+        <a href="/profile">戻る</a>
+        <a style="float: right;" href="/logout">ログアウト</a>
+    </div>
+
+    <div>
+        <form style="text-align:center;" method="post" th:action="@{/profile/changename}" th:object="${changeNameForm}">
+            <ul th:if="${#fields.hasGlobalErrors()}">
+                <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+            </ul>
+            <h1>ユーザー名変更フォーム</h1>
+            <br>
+            新しい名前:
+            <input type="text" th:field="*{newusername}"><br>
+            <span th:if="${#fields.hasErrors('newusername')}" th:errors="*{newusername}" style="color: red;"></span><br>
+            <input type="submit" value="登録" />
+        </form>
+    </div>
+</body>
+
+</html>

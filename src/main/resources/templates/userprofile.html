@@ -74,8 +74,7 @@
     <h1>
         ようこそ [[${name}]]
     </h1>
-    <p th:utext="${system_msg}"></p>    
-    <a href="/profile/changepw">パスワード変更はこちら</a><br>
+    <p th:utext="${system_msg}"></p>
     <img src="/profile/image" />
     <div>
         <h2>
@@ -87,6 +86,15 @@
         <input id="input" type="file" name="file" />
         <button id="button" style="display: none;" class="btn hide" name="submit">Upload</button>
     </div>
+    <br>
+
+    <a href="/profile/changename">ユーザー名変更はこちら</a>
+
+    <br>
+    <br>
+
+    <a href="/profile/changepw">パスワード変更はこちら</a>
+
 </body>
 
 </html>
