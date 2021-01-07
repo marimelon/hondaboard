@@ -25,11 +25,13 @@ public class UserAccountService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (StringUtils.isEmpty(username)) throw new UsernameNotFoundException("");
+        if (StringUtils.isEmpty(username))
+            throw new UsernameNotFoundException("");
 
         var userModel = userRepository.findByName(username);
-        
-        if (userModel == null) throw new UsernameNotFoundException("");
+
+        if (userModel == null)
+            throw new UsernameNotFoundException("");
 
         return userModel.get();
     }
@@ -45,15 +47,30 @@ public class UserAccountService implements UserDetailsService {
     }
 
     @Transactional
-    public void changePasswd(int userid, String oldpw, String newpw) throws NotFoundUserException,DifferentOldPasswd {
+    public void changePasswd(int userid, String oldpw, String newpw) throws NotFoundUserException, DifferentOldPasswd {
         var user = userRepository.findById(userid);
         if (!user.isPresent()) {
             throw new NotFoundUserException();
         }
         var enc_newpw = passwordEncoder.encode(newpw);
-        if (!passwordEncoder.matches(oldpw, user.get().getPassword())){
+        if (!passwordEncoder.matches(oldpw, user.get().getPassword())) {
             throw new DifferentOldPasswd();
         }
         userRepository.updatePassword(user.get().getId(), enc_newpw);
+    }
+
+    @Transactional
+    public void changeName(int userid, String name) throws NotFoundUserException, DuplicateUserException {
+        var user = userRepository.findById(userid);
+
+        if (!user.isPresent()) {
+            throw new NotFoundUserException();
+        }
+
+        if (userRepository.findByName(name).isPresent()) {
+            throw new DuplicateUserException();
+        }
+
+        userRepository.updateName(user.get().getId(), name);
     }
 }
