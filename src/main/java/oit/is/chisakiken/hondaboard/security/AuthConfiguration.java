@@ -20,7 +20,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/favicon.ico");
+        web.ignoring().antMatchers("/favicon.ico", "/img/**");
     }
 
     /**
@@ -32,8 +32,8 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
         // Spring Securityのフォームを利用してログインを行う
         http.formLogin().loginProcessingUrl("/login").loginPage("/").defaultSuccessUrl("/userpage", true);
         // 非ログインユーザ許可
-        http.authorizeRequests().antMatchers("/", "/register","/event/all","/chatpage/sse").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/chatpage").permitAll();
+        http.authorizeRequests().antMatchers("/", "/register", "/event/all", "/chatpage/sse").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/chatpage").permitAll();
 
         http.authorizeRequests().anyRequest().authenticated();
 
