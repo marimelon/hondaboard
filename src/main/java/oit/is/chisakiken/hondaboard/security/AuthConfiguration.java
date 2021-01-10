@@ -30,7 +30,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         // Spring Securityのフォームを利用してログインを行う
-        http.formLogin().loginProcessingUrl("/login").loginPage("/");
+        http.formLogin().loginProcessingUrl("/login").loginPage("/").defaultSuccessUrl("/userpage", true);
         // 非ログインユーザ許可
         http.authorizeRequests().antMatchers("/", "/register","/event/all","/chatpage/sse").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/chatpage").permitAll();
