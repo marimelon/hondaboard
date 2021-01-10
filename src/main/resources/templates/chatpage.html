@@ -79,16 +79,25 @@
                 var message_div = document.createElement("div");
                 message_div.className = "chat__message";
 
+                var message_userimg = document.createElement("img");
+                message_userimg.className = "chat__message__userimg";
+                message_userimg.src = "/img/users/" + message['userid'];
+
                 var message_name = document.createElement("div");
                 message_name.className = "chat__message__name";
                 message_name.textContent = message['username'];
-
+                
                 var message_content = document.createElement("div");
                 message_content.className = "chat__message__content";
                 message_content.textContent = message['content'];
 
-                message_div.appendChild(message_name);
-                message_div.appendChild(message_content);
+                var message_wrapper = document.createElement("div");
+                message_wrapper.className = "chat__message__wrapper";
+                message_wrapper.appendChild(message_name);  
+                message_wrapper.appendChild(message_content);  
+                
+                message_div.appendChild(message_userimg);
+                message_div.appendChild(message_wrapper);
                 document.getElementsByClassName("chat__wrapper")[0].appendChild(message_div);
 
                 // 下部の場合は下にスクロール
@@ -152,7 +161,7 @@
 
         .chat__message {
             font-size: 18px;
-            padding: 10px 20px;
+            padding: 10px 10px;
             color: #000;
             background-color: #e6e7ec;
             position: relative;
@@ -165,6 +174,19 @@
             position: relative;
             width: 70vw;
             left: 20%;
+        }
+
+        .chat__message__userimg{
+            width: 40px;
+            margin-top: 6px;
+            border-radius: 5px;
+            vertical-align: top;
+            float: left;
+        }
+
+        .chat__message__wrapper{
+            display: inline-block;
+            margin-left: 8px;
         }
 
         .chat__message__name {
@@ -265,8 +287,11 @@
     <div class="chat">
         <div class="chat__wrapper">
             <div class="chat__message" th:each="msg:${messages}">
-                <div class="chat__message__name">[[${msg.username}]]</div>
-                <div class="chat__message__content">[[${msg.content}]]</div>
+                <img class="chat__message__userimg" th:src="@{'/img/users/' + ${msg.userid}}" />
+                <div class="chat__message__wrapper">
+                    <div class="chat__message__name">[[${msg.username}]]</div>
+                    <div class="chat__message__content">[[${msg.content}]]</div>
+                </div>
             </div>
         </div>
         <form th:action="@{/chatpage(id=${id})}" method="post" id="new_message_form">
