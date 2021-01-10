@@ -11,11 +11,13 @@ import oit.is.chisakiken.hondaboard.model.Room;
 public class Message {
     int id;
     String room_name;
+    int userid;
     String username;
     String content;
 
     public Message(LoginUser user, Comment comment) {
         this.id = comment.getId();
+        this.userid = user.getId();
         this.username = user.getName();
         this.content = comment.getContent();
     }
@@ -23,6 +25,7 @@ public class Message {
     public Message(LoginUser user, Comment comment, Room room) {
         this.id = comment.getId();
         this.room_name = room.getName();
+        this.userid = user.getId();
         this.username = user.getName();
         this.content = comment.getContent();
     }
