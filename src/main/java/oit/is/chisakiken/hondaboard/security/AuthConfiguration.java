@@ -32,7 +32,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
         // Spring Securityのフォームを利用してログインを行う
         http.formLogin().loginProcessingUrl("/login").loginPage("/");
         // 非ログインユーザ許可
-        http.authorizeRequests().antMatchers("/", "/register","/event/all").permitAll();
+        http.authorizeRequests().antMatchers("/", "/register","/event/all","/chatpage/sse").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/chatpage").permitAll();
 
         http.authorizeRequests().anyRequest().authenticated();
