@@ -10,15 +10,15 @@ HondaBoardはHondaBoardは,共有リマインダー機能を有したチャッ�
 
 ## Wiki
 
-- [Wikiはこちら](../wiki/)
+- [Wikiはこちら](https://github.com/marimelon/hondaboard/wiki)
 
 ## マニュアル
 
-- [ユーザーマニュアルはこちら](../wiki/Setup-Manual)
+- [ユーザーマニュアルはこちら](https://github.com/marimelon/hondaboard/wiki/Setup-Manual)
 
-- [セットアップマニュアルはこちら](../wiki/User-Manual)
+- [セットアップマニュアルはこちら](https://github.com/marimelon/hondaboard/wiki/User-Manual)
 
-- [プレゼンテーション資料はこちら](../wiki/Presentation)*1
+- [プレゼンテーション資料はこちら](https://github.com/marimelon/hondaboard/wiki/Presentation)*1
   
 *1 Marpを利用しています.ローカルでご利用ください.
 
