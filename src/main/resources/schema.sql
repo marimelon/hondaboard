@@ -1,23 +1,23 @@
-CREATE TABLE user (
+CREATE TABLE IF NOT EXISTS user (
     id IDENTITY,
     name CHAR NOT NULL,
     password CHAR,
     image CHAR
 );
 
-CREATE TABLE room(
+CREATE TABLE IF NOT EXISTS room(
     id IDENTITY,
     name CHAR NOT NULL
 );
 
-CREATE TABLE roomuser(
+CREATE TABLE IF NOT EXISTS roomuser(
     room_id INT NOT NULL,
     user_id INT NOT NULL,
     role CHAR NOT NULL,
     PRIMARY KEY(room_id, user_id)
 );
 
-Create Table comment(
+Create Table IF NOT EXISTS comment(
     id IDENTITY,
     room_id INT NOT NULL,
     user_id INT NOT NULL,
@@ -25,7 +25,7 @@ Create Table comment(
     date TIMESTAMP NOT NULL
 );
 
-Create Table Event(
+Create Table IF NOT EXISTS Event(
     id IDENTITY,
     user_id INT NOT NULL,
     title CHAR NOT NULL,
