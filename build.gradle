@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'oit.is.chisakiken'
-version = '0.0.1-SNAPSHOT'
+version = 'v1.0.0'
 sourceCompatibility = '11'
 
 repositories {
