@@ -14,9 +14,9 @@ HondaBoardはHondaBoardは,共有リマインダー機能を有したチャッ�
 
 ## マニュアル
 
-- [ユーザーマニュアルはこちら](https://github.com/marimelon/hondaboard/wiki/Setup-Manual)
+- [セットアップマニュアルはこちら](https://github.com/marimelon/hondaboard/wiki/Setup-Manual)
 
-- [セットアップマニュアルはこちら](https://github.com/marimelon/hondaboard/wiki/User-Manual)
+- [ユーザーマニュアルはこちら](https://github.com/marimelon/hondaboard/wiki/User-Manual)
 
 - [プレゼンテーション資料はこちら](https://github.com/marimelon/hondaboard/wiki/Presentation)*1
   
